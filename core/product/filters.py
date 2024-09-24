@@ -1,5 +1,5 @@
 import django_filters
-from .models import Product
+from .models import Product, StorageLocation
 from django import forms
 
 
@@ -32,9 +32,11 @@ class ProductFilter(django_filters.FilterSet):
         field_name='purchase_price', label='Цена закупки',
         widget=forms.NumberInput(attrs={'class': 'form-control'})
     )
-    storage_location = django_filters.CharFilter(
-        field_name='storage_location', label='Место хранения',
-        widget=forms.TextInput(attrs={'class': 'form-control'})
+    storage_location = django_filters.ModelChoiceFilter(
+        field_name='storage_location',
+        queryset=StorageLocation.objects.all(),
+        label='Место хранения',
+        widget=forms.Select(attrs={'class': 'form-control'})
     )
     delivery_date__gt = django_filters.DateFilter(
         field_name='delivery_date', lookup_expr='gt', label='Дата доставки (от)',
